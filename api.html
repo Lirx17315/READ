@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novel API</title>
+</head>
+<body>
+    <script>
+        // 从localStorage读取数据
+        function getNovelData() {
+            const saved = localStorage.getItem('novel_chapters');
+            return saved ? JSON.parse(saved) : [];
+        }
+
+        // 处理API请求
+        const params = new URLSearchParams(window.location.search);
+        const action = params.get('action');
+        const chapters = getNovelData();
+        let response = {};
+
+        switch(action) {
+            case 'getAllContent':
+                response = {
+                    success: true,
+                    data: chapters,
+                    totalWords: chapters.reduce((sum, ch) => sum + ch.wordCount, 0),
+                    chapterCount: chapters.length
+                };
+                break;
+                
+            case 'getChapter':
+                
